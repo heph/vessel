@@ -2,7 +2,7 @@
 
 define (require, exports, module) ->
 
-  ipc  = nodeRequire 'ipc'
+  ipc  = require('electron').ipcRenderer
   _    = require 'underscore'
   $    = require 'jquery'
 

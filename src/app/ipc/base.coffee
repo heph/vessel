@@ -1,5 +1,5 @@
 _   = require 'underscore'
-ipc = require 'ipc'
+ipc = require('electron').ipcMain
 
 # IPC Listener base class that defines a IPC listener behavior similar to the
 # Backbone.View DOM event binding behavior, allowing classes that define the

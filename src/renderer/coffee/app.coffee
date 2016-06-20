@@ -4,7 +4,7 @@ define (require, exports, module) ->
 
   Logger          = require 'cs!utils/logger'
 
-  ipc             = nodeRequire 'ipc'
+  ipc             = require('electron').ipcRenderer
 
   $               = require 'jquery'
   Backbone        = require 'backbone'
@@ -68,9 +68,12 @@ define (require, exports, module) ->
       # Trigger the modal window
       Backbone.trigger 'modal:status:show', 'Initializing', false
 
+      console.log('attempting to Show the main window')
+
       # Show the main window
       ipc.sendSync "window:show:#{environment.id}"
 
+      console.log('showed the main window')
       # Load the config
       @config.load()
 

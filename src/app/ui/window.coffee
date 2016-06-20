@@ -1,10 +1,10 @@
 # Window Management
 
-BrowserWindow = require 'browser-window'
+BrowserWindow = require('electron').BrowserWindow
 crypto        = require 'crypto'
-dialog        = require 'dialog'
+dialog        = require('electron').dialog
 fs            = require 'fs-plus'
-ipc           = require 'ipc'
+ipc           = require('electron').ipcMain
 
 # Handle for a stack of windows
 _windows = {}
@@ -29,6 +29,7 @@ newWindow = ->
       else
         _windows[path].browser.focus()
 
+console.log 'got newWindow'
 # Application Window
 #
 # Responsible for creating the UI window, objects for reading the manifest
@@ -50,22 +51,35 @@ class AppWindow
   constructor: (@path) ->
     # Create an ID for the window
     id = @_pathHash()
+    console.log('window id: '+id)
     appPath = fs.realpathSync "#{__dirname}/.."
     @args.icon = "#{appPath}/images/icon@2x.png"
 
+    console.log('attempting to open a browser window')
+
     # Create a new BrowserWindow and load the  src/browser application
     @browser = new BrowserWindow @args
+
+    console.log('got browser window')
+
     ePath = encodeURIComponent(@path)
     url = "file://#{appPath}/renderer/index.html?id=#{id}&path=#{ePath}"
-    @browser.loadUrl url
 
+    console.log('attempting to loadURL('+url+')')
+
+    @browser.loadURL url
+
+    console.log('loaded url')
     # When the browser window closes, destroy references to itself
     @browser.on 'closed', (event) =>
+      console.log('browser.on closed')
       _windows[@path] = null
       @browser = null
 
+
     # Listen for configuration IPC requests
     ipc.on "window:show:#{id}", (event) =>
+      console.log('ipc on '+"window:show:#{id}")
       @browser.show()
       event.returnValue = true
 
@@ -73,6 +87,7 @@ class AppWindow
   #
   # Returns a string
   _pathHash: ->
+    console.log('called _pathHash')
     sha = crypto.createHash 'sha1'
     sha.update @path
     sha.digest 'hex'

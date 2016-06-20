@@ -1,8 +1,8 @@
 # Implement the Application Menu and its core behaviors
 
-app           = require 'app'
-BrowserWindow = require 'browser-window'
-Menu          = require 'menu'
+app           = require('electron').app
+BrowserWindow = require('electron').BrowserWindow
+Menu          = require('electron').Menu
 
 newWindow     = require './window'
 

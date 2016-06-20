@@ -5,7 +5,7 @@ gruntFunction = (grunt) ->
 
   pkg = grunt.file.readJSON 'package.json'
 
-  binDir = 'binaries/Vessel.app'
+  binDir = 'binaries/Vessel-darwin-x64/Vessel.app'
   contentsDir = "#{binDir}/Contents"
   resourcesDir = "#{contentsDir}/Resources"
   appDir = "#{resourcesDir}/app"
@@ -71,12 +71,15 @@ gruntFunction = (grunt) ->
           {expand: true, src: 'resources/vessel.css', dest: cssDir, flatten: true, filter: 'isFile'}
         ]
 
-    'build-atom-shell':
-      tag: 'v0.22.2'
-      targetDir: './binaries'
-      buildDir: './build',
-      projectName: 'vessel'
-      productName: 'Vessel'
+    electron:
+      osxBuild:
+        options:
+          name: 'Vessel'
+          dir: './'
+          out: 'binaries/'
+          version: '1.2.2'
+          platform: 'darwin'
+          arch: 'x64'
 
     less:
       development:
@@ -100,7 +103,7 @@ gruntFunction = (grunt) ->
           stderr: false
           failOnError: false
       run:
-        command: 'binaries/Vessel.app/Contents/MacOS/Vessel'
+        command: binDir+'/Contents/MacOS/Vessel'
         options:
           stdout: true
           stderr: true
@@ -143,13 +146,13 @@ gruntFunction = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-less'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-dev-update'
-  grunt.loadNpmTasks 'grunt-build-atom-shell'
+  grunt.loadNpmTasks 'grunt-electron'
   grunt.loadNpmTasks 'grunt-npm-install'
   grunt.loadNpmTasks 'grunt-shell-spawn'
   grunt.loadNpmTasks 'grunt-template'
 
   grunt.registerTask 'default', ['compile']
-  grunt.registerTask 'setup',   ['checkDependencies', 'devUpdate', 'clean:dist', 'build-atom-shell']
+  grunt.registerTask 'setup',   ['checkDependencies', 'devUpdate', 'clean:dist', 'electron']
   grunt.registerTask 'lint',    ['coffeelint:app']
   grunt.registerTask 'compile', ['lint', 'coffee', 'less', 'template', 'copy']
   grunt.registerTask 'dist',    ['compile', 'shell:dist']

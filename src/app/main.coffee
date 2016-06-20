@@ -1,8 +1,8 @@
 # Main application entry point
 
-app           = require 'app'
-crashReporter = require 'crash-reporter'
-ipc           = require 'ipc'
+app           = require('electron').app
+#crashReporter = require 'crash-reporter'
+ipc           = require('electron').ipcMain
 
 Menu          = require './ui/menu'
 newWindow     = require './ui/window'
@@ -44,15 +44,19 @@ class Application
 
       # Create the application menu
       @menu = new Menu
+      console.log('created new Menu')
 
       # Create the tray icon
       @tray = new TrayIcon
+      console.log('created new TrayIcon')
 
       # Perform the startup initialization and wait for a callback response
       startup.initialize () ->
 
         # Open a new environment window
         newWindow()
+
+        console.log('successfully opened a new environment window')
 
     ipc.on 'app:badge:get', (event) ->
       event.returnValue = app.dock.getBadge()

@@ -1,6 +1,6 @@
 define (require, exports, module) ->
 
-  ipc      = nodeRequire 'ipc'
+  ipc      = require('electron').ipcRenderer
 
   Backbone = require 'backbone'
 

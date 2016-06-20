@@ -1,4 +1,4 @@
-BrowserWindow = require 'browser-window'
+BrowserWindow = require('electron').BrowserWindow
 #ipc           = require 'ipc'
 moment        = require 'moment'
 

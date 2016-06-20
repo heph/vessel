@@ -1,5 +1,4 @@
 fs       = require 'fs-plus'
-ipc      = require 'ipc'
 path     = require 'path'
 yaml     = require 'js-yaml'
 

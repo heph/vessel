@@ -1,7 +1,7 @@
-app       = require 'app'
+app       = require('electron').app
 fs        = require 'fs-plus'
-Tray      = require 'tray'
-Menu      = require 'menu'
+Tray      = require('electron').Tray
+Menu      = require('electron').Menu
 newWindow = require './window'
 
 class TrayIcon
